@@ -19,7 +19,7 @@ Full specification: [`agent_docs/specification.md`](agent_docs/specification.md)
 
 ```
 /
-├── backend/                  # .NET 8 Web API (C#)
+├── backend/                  # .NET 10 Web API (C#)
 │   ├── MyTimeGarden.Api/     # Controllers, Program.cs, appsettings
 │   ├── MyTimeGarden.Core/    # Domain entities, interfaces, DTOs
 │   ├── MyTimeGarden.Infrastructure/  # EF Core, repositories, AI providers
@@ -104,7 +104,7 @@ docker-compose down -v
 
 ## Architecture Decisions
 
-- **Backend**: .NET 8, ASP.NET Core Web API, EF Core (code-first), PostgreSQL, Redis
+- **Backend**: .NET 10, ASP.NET Core Web API, EF Core (code-first), PostgreSQL, Redis
 - **Frontend**: React 18, TypeScript strict mode, Vite, Zustand, TanStack Query, shadcn/ui, Tailwind CSS
 - **Auth**: OAuth 2.0 (Google primary), JWT access tokens (15 min) + refresh tokens (30 days)
 - **AI**: Pluggable via `IAiProvider` — never call AI APIs directly from frontend; always proxy through backend

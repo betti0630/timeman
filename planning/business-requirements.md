@@ -47,7 +47,7 @@
 
 The application targets adults who juggle multiple competing responsibilities — household duties, self-improvement, professional growth, hobbies, and family obligations — and who struggle to give adequate attention to all of them within a limited daily window of 2–4 hours of free time.
 
-The product will be delivered as a cloud-hosted SaaS web application, accessible from any modern browser on desktop or mobile. It will be built on a .NET 8 backend, a React 18 frontend, and a PostgreSQL database, deployed to a cloud provider (AWS, Azure, or GCP).
+The product will be delivered as a cloud-hosted SaaS web application, accessible from any modern browser on desktop or mobile. It will be built on a .NET 10 backend, a React 18 frontend, and a PostgreSQL database, deployed to a cloud provider (AWS, Azure, or GCP).
 
 In its first version, the application is a personal tool with no monetisation and no team or family sharing features. It is designed to be extensible toward a commercial SaaS offering in future versions.
 

@@ -2,7 +2,7 @@
 
 **Version:** 1.0
 **Date:** March 2026
-**Architecture:** .NET 8 · React 18 · PostgreSQL
+**Architecture:** .NET 10 · React 18 · PostgreSQL
 **Deployment:** Cloud (AWS / Azure / GCP)
 
 ---
@@ -70,7 +70,7 @@ My Time Garden is a SaaS personal time-allocation and life-management web applic
 └───────────────────────┬─────────────────────────────┘
                         │ HTTPS / REST
 ┌───────────────────────▼─────────────────────────────┐
-│               .NET 8 Web API (C#)                   │
+│               .NET 10 Web API (C#)                   │
 │   Controllers · Services · Repositories · EF Core  │
 │                                                     │
 │  ┌──────────┐  ┌───────────┐  ┌──────────────────┐ │
@@ -99,7 +99,7 @@ My Time Garden is a SaaS personal time-allocation and life-management web applic
 │                                                     │
 │  Load Balancer                                      │
 │    └── App Service / ECS / Container Apps           │
-│          └── .NET 8 API (Docker container)          │
+│          └── .NET 10 API (Docker container)          │
 │                                                     │
 │  Managed PostgreSQL (RDS / Azure DB / Cloud SQL)    │
 │  Secrets Manager (API keys, OAuth secrets)          │
@@ -115,7 +115,7 @@ My Time Garden is a SaaS personal time-allocation and life-management web applic
 
 | Component | Technology | Notes |
 |---|---|---|
-| Runtime | .NET 8 | LTS release |
+| Runtime | .NET 10 | LTS release |
 | Language | C# 12 | |
 | Web framework | ASP.NET Core Web API | Minimal API or controller-based |
 | ORM | Entity Framework Core 8 | Code-first migrations |

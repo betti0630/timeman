@@ -38,18 +38,7 @@
 9. [Success Criteria](#9-success-criteria)
 10. [Scope](#10-scope)
 11. [Glossary](#11-glossary)
-12. [Review Notes — A-03: Category Configuration](#12-review-notes--a-03-category-configuration)
-13. [Review Notes — A-04: Daily Time Budget](#13-review-notes--a-04-daily-time-budget)
-14. [Review Notes — Full Document](#14-review-notes--full-document)
-15. [Review Notes — Second Full Pass](#15-review-notes--second-full-pass)
-16. [Review Notes — Third Full Pass](#16-review-notes--third-full-pass)
-17. [Review Notes — AI One-Click Schedule Apply](#17-review-notes--ai-one-click-schedule-apply)
-18. [Review Notes — Weekly and Monthly Planning](#18-review-notes--weekly-and-monthly-planning)
-19. [Review Notes — Planning-First Strategic Shift](#19-review-notes--planning-first-strategic-shift)
-20. [Review Notes — AI as Primary Value Feature](#20-review-notes--ai-as-primary-value-feature)
-21. [Review Notes — Tasks within Categories](#21-review-notes--tasks-within-categories)
-22. [Review Notes — Task Pool (Kanban Model)](#22-review-notes--task-pool-kanban-model)
-23. [Review Notes — Fourth Full Pass](#23-review-notes--fourth-full-pass)
+12. [Decision Log](#12-decision-log)
 
 ---
 
@@ -481,337 +470,122 @@ The V1 release will be considered successful when the following criteria are met
 
 ---
 
-## 12. Review Notes — A-03: Category Configuration
+## 12. Decision Log
 
-**Raised:** March 2026
-**Raised by:** Claude Code (doc review)
-**Trigger:** Product Owner stated: *"I want the five categories to be seeded but I want the possibility to configure them first by the admin, then the user."*
+All key decisions made during document review. Replaces the detailed review notes (Sections 12–23).
 
----
+### 12.1 Categories
 
-### Decisions recorded — March 2026
-
-| Question | Decision |
+| Decision | Detail |
 |---|---|
-| V1 or V2? | V1 — category configuration is in scope |
-| Admin "configure" means? | Add new categories; hide existing ones; edit labels, emojis, colours (extended BR-48) |
-| User "configure" means? | Select which active catalogue categories appear in their personal planner view (new BR-27) |
-| Admin → user hierarchy | Admin manages the catalogue (add/hide); users select within what is active |
-| What happens to logged data when a category is hidden? | Entries remain intact and stay linked to their original category (new BR-49) |
-| Are the five seeded categories deletable? | No — they are seeded defaults; admin can hide them but the data relationship is preserved |
-| User-created categories (define from scratch)? | Deferred to V2; users select from admin-defined catalogue only |
+| Five seeded categories at launch | Admins may add or hide categories; users select which active ones appear in their view |
+| Time entries always linked to original category | Hiding a category preserves all its data; entries remain accessible in history |
+| User-created categories | Deferred to V2; users select from admin-managed catalogue only |
 
-**Updated items:** A-03, C-02, BR-25, BR-48; added BR-27, BR-49; updated Section 10.2 out-of-scope wording.
+### 12.2 Daily Free-Time Budget
 
----
-
-## 13. Review Notes — A-04: Daily Time Budget
-
-**Raised:** March 2026
-**Raised by:** Claude Code (doc review)
-**Trigger:** Product Owner asked: *"the 2–4 hours is configurable?"*
-
----
-
-### Current wording
-
-> A-04 — *"The daily time budget of 2–4 hours is a design constraint for the AI assistant's suggestions, not a hard system limit."*
-
----
-
-### Decisions recorded — March 2026
-
-| Question | Decision |
+| Decision | Detail |
 |---|---|
-| Fixed assumption or per-user setting? | Per-user — each user sets their own daily free-time budget (new BR-28) |
-| Single value or range? | Single value in minutes |
-| Static only, or also per-day override? | Both — static default in Settings; user can override for the day by stating availability in the AI chat (BR-33 updated) |
-| Affects anything beyond AI suggestions? | Yes — also surfaces as a visual remaining budget indicator on the daily planner (new BR-16) |
-| Redundant with per-category goals? | No — the daily budget is separate; the AI uses it to help the user allocate their available time optimally across categories |
-| Derive budget from sum of goals? | No — separate budget field required |
-| Handle per-day variability via AI chat? | Yes — important; no additional per-day UI needed |
-| Single number sufficient? | Yes — a range is unnecessary |
+| Per-user configurable | Single value in minutes; set in onboarding and editable in Settings |
+| Per-day override | User can state their available time in the AI chat; overrides stored value for that session |
+| Visual indicator | Remaining budget shown on the daily planner; not a hard limit |
 
-**Updated items:** A-04, BR-33; added BR-16, BR-28.
+### 12.3 User Account & Access
 
----
-
-## 14. Review Notes — Full Document
-
-**Raised:** March 2026
-**Raised by:** Claude Code (doc review)
-**Scope:** Complete pass over all sections
-
----
-
-### Decisions recorded — March 2026
-
-| Question | Decision |
+| Decision | Detail |
 |---|---|
-| How is the first admin created? | Seed script at deployment; subsequent admins via direct DB intervention (C-07 updated) |
-| Who configures the AI message limit? | Admin via dashboard; three tiers: zero (no access, default for new users), low, and high; limits for low and high are admin-configurable (BR-36, BR-46, BR-47 updated) |
-| Is the daily free-time budget collected at onboarding? | Yes — required step in onboarding; also editable in Settings afterwards |
-| What does onboarding include? | Category selection, daily free-time budget, goals per category, notification preferences; new users always start on zero AI tier (new BR-06–BR-11) |
-| History retention for time entries? | All history retained indefinitely (BR-14 updated) |
-| Timezone handling? | User's local timezone detected at sign-in and applied to all date calculations and AI suggestions (new BR-17) |
-| AI conversation history retention? | Stored indefinitely (consistent with full history policy); only the most recent messages (configurable limit) are injected per API call to manage context window cost (new BR-37) |
-| What does "manage" mean in BR-44? | Deactivation (BR-45) and AI quota tier assignment (BR-46); BR-44 narrowed to search/view only |
+| First admin | Created via seed script at deployment; subsequent admins via direct DB intervention |
+| Deactivation | Reversible; all data preserved and restored on reactivation |
+| Timezone | Detected and stored on every sign-in; applied to all date calculations and AI suggestions |
+| Week start | Fixed Monday–Sunday (C-08); not user-configurable in V1 |
 
-**Stale references fixed in main body:** Section 1 Executive Summary; BR-12, BR-13, BR-14, BR-23; Glossary (Priority Rank, Category); R-04; Section 9.1; Section 10.1.
+### 12.4 AI Quota System
 
-**New items added:** BR-06–BR-11 (onboarding); BR-17 (timezone); BR-37 (AI history retention); BR-46–BR-47 (admin tier management); Glossary terms (Daily Free-Time Budget, AI Message Quota Tier).
-
----
-
-## 15. Review Notes — Second Full Pass
-
-**Raised:** March 2026
-**Raised by:** Claude Code (doc review)
-**Scope:** Full document re-read after all prior review changes were applied
-
----
-
-### Decisions recorded — March 2026
-
-| Question | Decision |
+| Decision | Detail |
 |---|---|
-| What does a zero-tier user see? | A message explaining AI access is not yet enabled and they should contact an admin (BR-32 updated) |
-| Tier change timing? | Immediate in both directions — demotion locks out at once; upgrade grants full new-tier allowance immediately (BR-36 updated) |
-| Can deactivated users be reactivated? | Yes — admins can deactivate and reactivate; data is preserved and fully restored on reactivation (BR-45 updated) |
-| Default notification state if onboarding skipped? | Off (BR-10 updated) |
-| Empty catalogue during onboarding? | Show fallback message; block onboarding until at least one category is available (BR-07 updated) |
-| Week start day? | Monday — fixed; not user-configurable (new C-08; Glossary updated) |
+| Three tiers | Zero (no access, default for new users), Low, High |
+| Admin-configurable | Low and High limits set by admin via dashboard |
+| Tier change timing | Immediate; demotion locks out at once; upgrade grants remaining allowance of new tier (new limit − messages sent today) |
+| Zero-tier UX | In-app message explaining AI is not enabled; user told to contact admin |
+| AI conversation history | Stored indefinitely; only most recent messages injected per API call |
 
-**Stale references fixed:** Section 2.1; BO-01; BR-16/BR-17 order; C-06; R-08; Section 12 Q&A cleaned up.
+### 12.5 Onboarding
 
-**Structural changes:** New subsection 5.6 (User Settings) for BR-27 and BR-28; A-03 and A-04 compressed; C-08 added.
-
----
-
-## 16. Review Notes — Third Full Pass
-
-**Raised:** March 2026
-**Raised by:** Claude Code (doc review)
-**Scope:** Full document re-read after all prior review changes were applied
-
----
-
-### Decisions recorded — March 2026
-
-| Question | Decision |
+| Decision | Detail |
 |---|---|
-| BR-10 priority? | Upgraded to Must Have — notification prompt is mandatory; default is off if skipped |
-| Future date logging? | Not permitted — time entries restricted to today and past dates (BR-18 updated) |
-| User hides own category — what happens to data? | Hidden from planner but fully preserved; restored if reactivated (BR-27 updated) |
-| Mid-day tier upgrade allowance? | Remaining allowance = new tier limit minus messages already sent today (BR-36 updated) |
-| Notification schedule configurable per type? | Yes — each notification type has its own schedule (BR-40 updated) |
-| Weekly summary timing? | Monday early morning in user's local timezone (BR-42 updated) |
-| Risk: admin never upgrades from zero tier? | New R-09 added; admin dashboard to highlight zero-tier users |
-| Document version? | Stays 1.0 — project not yet started; version bump at first release |
+| Mandatory steps | Category selection, daily free-time budget, at least one Backlog Item per selected category, notification preferences |
+| All steps Must Have | Including notification prompt (defaults to off if skipped) |
+| Empty catalogue | Fallback message shown; onboarding blocked until admin makes at least one category available |
+| New users | Assigned zero AI tier by default |
 
-**Fixed in main body:** BO-04 measure of success; BR-17 (timezone refreshed every sign-in); R-01 (downgraded to Low); Section 9.1 AI test qualifier; Section 10.1 (added missing scope items); Section 12 conflicts table removed.
+### 12.6 Planning Model (Planning-First)
 
-**Structural changes applied:** Sections renumbered (5.1a→5.2 … 5.9→5.11); BR suffixes renumbered sequentially (BR-06→BR-12 … BR-49→BR-49).
-
----
-
-## 17. Review Notes — AI One-Click Schedule Apply
-
-**Raised:** March 2026
-**Raised by:** Claude Code (doc review)
-**Trigger:** Product Owner stated: *"I want a one-click apply"* for AI schedule suggestions.
-
----
-
-### Decisions recorded — March 2026
-
-| Question | Decision |
+| Decision | Detail |
 |---|---|
-| What gets written to the DB on apply? | Planned time entries — a new concept distinct from logged entries (new BR-56; Glossary updated) |
-| Future date restriction bypass? | Yes, same-day only — planned entries may be created for future hours within the current calendar day (BR-57) |
-| Partial apply? | No — all-or-nothing; user discusses with the AI to refine the schedule before applying (BR-58) |
-| Can the apply be undone? | Yes — single undo action removes all planned entries from that application (BR-59) |
-| Planned time counts toward goals/streaks/budget? | No — only converted (logged) entries count; planned entries are pending until user marks them done (BR-62) |
+| Primary workflow | Create Backlog Items → schedule as Tasks → mark done (auto-logs time) |
+| Ad-hoc logging | Optional (Should Have); for unplanned time not associated with a Task |
+| Future date restriction | Tasks may be created up to 1 year ahead; ad-hoc logs restricted to today and past |
+| Mark done | Prompts user to confirm or adjust actual time (pre-filled with planned duration); preserves original planned duration for plan vs. actual comparison |
+| Weekly summary notification | Monday early morning in user's local timezone |
+| Notification schedule | Configurable per notification type independently |
 
-**New items added:** BR-56–BR-63; Glossary term "Planned Time Entry"; Section 10.1 scope updated.
+### 12.7 Task & Backlog Model
 
-**Scope note:** Users can also create planned entries manually from the planner UI (BR-63), not only via AI apply. This means zero-tier users (no AI access) can still benefit from the planned entry workflow.
-
----
-
-### Decisions recorded — March 2026
-
-| Question | Decision |
+| Decision | Detail |
 |---|---|
-| How does the user convert planned → logged? | "Mark as done" button; planned duration used as-is with no adjustment prompt (BR-60 updated) |
-| Unactioned planned entries at end of day? | System prompts user to review them; user may convert, delete, or dismiss (new BR-65) |
-| Can user edit a planned entry before converting? | Yes — duration and category are editable (new BR-64) |
-| Single timeline or separate sections? | Single timeline on the daily planner, colour-coded to distinguish planned from logged (BR-61 updated) |
+| Two entities | Backlog Item (persistent catalogue entry per category) → Task (scheduled instance with date + duration) |
+| Backlog Items | Name, optional estimated duration, optional due date, optional recurrence; user-ordered; never consumed when Tasks are created |
+| Tasks | Planned or Done state; same Backlog Item may have multiple Tasks across different dates simultaneously |
+| Completion | Marking a Task done auto-creates a logged time entry; user confirms/adjusts actual duration |
+| Recurrence | Auto-generates next Task in backlog when current is marked done |
+| Overdue | Unfinished Task past its date stays as overdue; user may complete, reschedule, or delete |
+| Data on category hide | Backlog Items and Tasks preserved alongside time entries when category is hidden (admin or user) |
+| Onboarding | At least one Backlog Item per selected category required before proceeding |
 
-**New items added:** BR-64 (edit planned entry, preserves original planned duration); BR-65 (end-of-day review prompt); BR-61 updated (single colour-coded timeline).
+### 12.8 Goals & Progress
 
-| Question | Decision |
+| Decision | Detail |
 |---|---|
-| Edited planned duration lost on mark-as-done? | Original planned duration preserved as a separate field; logged entry records actual duration (BR-64 updated) |
-| Weekly/monthly plans — future-dated planned entries? | V1 — BR-57 updated to allow future-dated planned entries (removed same-day restriction) |
-| Weekly/monthly plans — higher-level goal templates? | V1 — see Section 18 for open questions before BRs can be written |
+| Time-based goals removed | Daily/Weekly Commitment is derived automatically from sum of scheduled Task durations |
+| Completion rate | Percentage of planned Task duration actually logged per category per day |
+| Streak | Consecutive days with at least one completed Task per category |
+| Plan vs. actual | Always available; planned duration preserved separately when actual differs |
 
+### 12.9 AI Planning
 
----
-
-## 18. Review Notes — Weekly and Monthly Planning
-
-**Raised:** March 2026
-**Raised by:** Claude Code (doc review)
-**Trigger:** Product Owner moved weekly and monthly planning from V2 to V1.
-
----
-
-### Decisions recorded — March 2026
-
-| Question | Decision |
+| Decision | Detail |
 |---|---|
-| Weekly/monthly planning scope? | V1 — both future-dated planned entries (Option A) and higher-level goal templates (Option B) |
-| Same-day restriction lifted? | Yes — BR-57 updated; planned entries may now be created for any future date |
+| AI is second business objective | After planning tool itself (BO-01 primary, BO-04 second) |
+| Planning horizons | Day, week, month, longer; periods beyond one week decomposed into weekly segments |
+| One-click apply | Available at all horizons; creates Tasks from Backlog Items; all-or-nothing; undoable |
+| AI context | Full backlog (names, durations, due dates, recurrence, order), scheduled Tasks, completion rates, priorities, daily free-time budget |
+| Zero-tier | App fully usable without AI; AI is the primary value-add, not a requirement |
 
----
+### 12.10 Planner Views
 
-### Decisions recorded — continued
-
-| Question | Decision |
+| Decision | Detail |
 |---|---|
-| Can the AI apply to future days? | Yes — AI suggests and applies plans at any horizon, week by week (see Section 20, BR-56 updated) |
+| Daily planner | Single colour-coded timeline of Tasks and logged entries; backlog panel sidebar; remaining budget indicator |
+| Weekly planner | Future days show planned Tasks; past days show logged entries; completion rates per category |
+| Monthly planner | Calendar view of all scheduled Tasks and generic time blocks (BR-84) |
+| End-of-day review | Prompts for today's incomplete Tasks + surfaces tomorrow's plan |
 
-### Questions requiring clarification
+### 12.11 Deferred to V2
 
-**Q2 — What is a "higher-level goal template"?**
-Deferred — Product Owner noted that the goal model may shift from time-based to task-completion-based. See Section 21 (Tasks) for the notice that will inform this decision.
-
-### Decisions recorded — continued
-
-| Question | Decision |
-|---|---|
-| Planning horizon limit? | 1 year maximum (new C-09; BR-57 updated) |
-| Weekly view shows future planned entries? | Yes — weekly view shows planned entries for future days and logged for past days (BR-13 updated) |
-| End-of-day review scope? | Today's unconverted entries + tomorrow's plan (BR-65 updated) |
-| Higher-level goal templates? | Deferred pending task model definition (see Section 21) |
-
----
-
-## 19. Review Notes — Planning-First Strategic Shift
-
-**Raised:** March 2026
-**Raised by:** Claude Code (doc review)
-**Trigger:** Product Owner stated: *"Planning is more important than recording past. Planning my time is the value of the application."*
+| Item |
+|---|
+| User-created category definitions |
+| Weekly and monthly plan templates (reusable named templates) |
+| Native iOS / Android app |
+| Team / family shared accounts |
+| Calendar sync |
+| Paid plans / subscription billing |
+| Offline-first / PWA |
+| Email notifications |
+| Data export (CSV / PDF) |
+| Advanced AI features (voice, image input) |
 
 ---
 
-### Decisions recorded — March 2026
-
-| Question | Decision |
-|---|---|
-| Is logging required? | Optional — primary workflow is planned entries; ad-hoc logging still available for unplanned activity (BR-18 updated to Should Have) |
-| Planned 2h but only done 1h? | "Mark as done" prompts user to confirm or adjust actual time; logged entry records actual, planned duration preserved for comparison (BR-60 revised) |
-| Streak basis? | Consecutive days with at least one completed planned entry per category (BR-30 updated; Glossary updated) |
-| New completion rate metric? | Yes — percentage of planned minutes actually logged per category per day (new BR-66; Glossary updated) |
-| BO-02 reframed? | Yes — "Make daily planning frictionless"; measure: planned entry created in under 5 seconds |
-
-**Updated in main body:** Section 1 (Executive Summary); Section 2.1 (Problem Statement); Section 2.2 (Opportunity); Section 2.3 (Proposed Solution); BO-02; BR-18; BR-30; BR-60; Glossary (Streak, Time Entry, Completion Rate added).
-
-**Note:** BR-60 overrides the earlier "planned duration as-is" decision from Section 17 Q1. The planning-first model requires actual time to be captured on completion, since planned ≠ actual is a core insight the app must surface.
-
----
-
-## 20. Review Notes — AI as Primary Value Feature
-
-**Raised:** March 2026
-**Raised by:** Claude Code (doc review)
-**Trigger:** Product Owner stated: *"The most valuable feature of the application is the help of the AI assistant to plan the day, the week, the month or a longer period."*
-
----
-
-### Decisions recorded — March 2026
-
-| Question | Decision |
-|---|---|
-| Does zero-tier default need to change? | No — app is fully usable without AI; AI is the primary value-add but not required |
-| AI one-click apply at all horizons? | Yes — day, week, month, longer; multi-week plans applied week by week (BR-56 updated) |
-| What does "longer period" mean? | Any horizon beyond a month; always decomposed into weekly segments (BR-34 updated) |
-| BO hierarchy? | BO-01 (planning tool) is primary; BO-04 (AI assistant) is second — table reordered accordingly |
-
-**Updated in main body:** BO table reordered and descriptions updated; BO-03 updated to include plan vs. actual; BR-33 (AI context now includes completion rates and all horizons); BR-34 (all planning horizons); BR-56 (one-click apply at all horizons, multi-week week-by-week).
-
----
-
-## 21. Review Notes — Tasks within Categories
-
-**Raised:** March 2026
-**Raised by:** Claude Code (doc review)
-**Trigger:** Product Owner stated: *"I want user-dependent tasks and/or task categories in the main categories. For example: cleaning the toilet, completing an XY English lesson, watching XY Udemy course."*
-**Connection:** Product Owner also noted in Section 18 Q2: "The goal is not the logged time, but the task completion." This suggests tasks may replace or supplement time-based goals.
-
----
-
-### Questions requiring clarification
-
-### Decisions recorded — March 2026
-
-| Question | Decision |
-|---|---|
-| What is a task? | Named completable activity under a category; optional estimated duration, optional due date (BR-67, BR-68) |
-| Two or three levels? | Two — Category → Tasks; no intermediate task category (BR-67) |
-| Who manages tasks? | User-created only; no admin involvement |
-| How do tasks relate to planned entries? | Planning a task for a date and duration IS creating a planned entry; generic time blocks remain as a fallback (BR-70, BR-63 updated) |
-| How do tasks relate to goals/time? | Completing a task automatically logs the assigned duration; user confirms/adjusts actual time at completion (BR-71; consistent with BR-60) |
-| Can tasks recur? | Yes — recurrence schedule auto-generates the next occurrence on completion or due date (BR-72) |
-| Can tasks be ordered? | Yes — user-defined order within a category, reflected in planner and AI suggestions (BR-69) |
-
-**New items added:** BR-67–BR-73 (Task Management subsection 5.4b); Glossary terms "Task" and updated "Planned Time Entry" and "Time Entry"; Section 10.1 updated.
-
-**Updated:** BR-33, BR-56, BR-63 (tasks as primary planning unit).
-
----
-
-## 22. Review Notes — Task Pool (Kanban Model)
-
-**Raised:** March 2026
-**Raised by:** Claude Code (doc review)
-**Trigger:** Product Owner stated: *"I want task pools, from which the user or the AI assistant can select to do (like a Kanban board)."*
-
----
-
-### Decisions recorded — March 2026
-
-| Question | Decision |
-|---|---|
-| Task states? | Three: Pool → Planned → Done (BR-68 updated) |
-| Pool per category or global? | Per category — each active category has its own pool (BR-74) |
-| Unfinished planned entry at end of day? | Stays as an overdue planned entry; task remains in Pool state (BR-75) |
-| Same task planned for multiple dates simultaneously? | Yes — multiple planned entries may reference the same pool task (BR-70 updated) |
-| Pool visible during planning? | Yes — visible as a panel/sidebar in the planning view (BR-76) |
-
-**New items added:** BR-74–BR-77; Glossary terms "Task Pool" and updates to "Task" and "Planned Time Entry"; Section 10.1 updated.
-
----
-
-## 23. Review Notes — Fourth Full Pass
-
-**Raised:** March 2026
-**Raised by:** Claude Code (doc review)
-**Scope:** Full document re-read after task pool and planning-first changes
-
----
-
-### Decisions recorded — March 2026
-
-| Question | Decision |
-|---|---|
-| Task state "Planned" contradiction? | Pool items are Backlog Items (catalogue); they become Tasks when scheduled; two separate entities, not states of one entity (5.4b fully rewritten) |
-| Category hidden — what happens to backlog? | Backlog Items and Tasks preserved alongside time entries (BR-27, BR-49 updated) |
-| Onboarding — require at least one backlog item? | Yes — at least one Backlog Item per selected category required before proceeding (BR-09 updated) |
-| Monthly planner view? | Needed — new BR-84 added to 5.3 |
-| Time-based goals replaced? | Yes — goals are now derived from scheduled Task durations (Daily/Weekly Commitment); BR-23 rewritten; BR-24 removed; Glossary updated |
-
-**Fixed:** BR-60 and BR-71 merged into BR-71 (in 5.4b); BR-57 and BR-63 moved to 5.4b as BR-82/BR-83; BR-61, BR-62, BR-64, BR-65 moved to 5.4b as BR-78–BR-81; section 5.8 re-ordered numerically; BR-19/BR-20 retained as Should Have (still valid for ad-hoc logging); Section 9.1 updated; Section 10.1 updated; R-07 upgraded to Very High; Persona 1 updated.
-
-**Glossary overhaul:** Added Backlog Item, Backlog, Task (redefined), Generic Time Block, Daily/Weekly Commitment; updated Time Entry, Completion Rate, Streak; removed Daily Goal and Weekly Goal.
+*End of Business Requirements Document.*
+*This document should be reviewed and re-baselined whenever a significant scope change is agreed.*

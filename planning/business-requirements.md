@@ -78,10 +78,13 @@ There is a clear gap in the market for a warm, encouraging, AI-assisted time pla
 
 ### 2.3 Proposed Solution
 
+**Core model — Tasks, not time:**
+The user plans specific Tasks — named activities they intend to do. Time is an attribute of a Task (the estimated or assigned duration), not the primary planning unit. **Progress is measured by Tasks completed, not minutes logged.** Time is a by-product of doing tasks, not a goal in itself.
+
 My Time Garden provides:
 
-- A daily, weekly, and monthly planner built around planned time entries — plan first, log completion second
-- A drag-and-drop priority system to reflect what matters most
+- A daily, weekly, and monthly planner built around Tasks — the user decides *what* to do; time follows from the tasks planned
+- A priority ranking system to reflect what matters most
 - Visual plan vs. actual tracking with completion rates and progress indicators
 - An AI assistant that helps build and refine the user's plan, aware of their goals, priorities, and available time
 - Browser push notifications as lightweight reminders
@@ -97,10 +100,10 @@ This product serves as both a personal utility and a proof-of-concept platform. 
 
 | ID | Objective | Measure of Success |
 |---|---|---|
-| BO-01 | Provide a single planning tool covering all key life domains | All seeded categories are live and fully plannable at launch |
+| BO-01 | Provide a single task-planning tool covering all key life domains | Users can create personal categories, populate backlogs, and schedule Tasks at launch |
 | BO-04 | Deliver an AI planning assistant as the primary source of value | AI assistant helps users plan at day, week, month, and longer horizons with one-click apply (for users with a non-zero AI quota tier) |
-| BO-02 | Make daily planning frictionless | Users can create a planned time entry in under 5 seconds |
-| BO-03 | Help users understand their time patterns and plan vs. actual gaps | Completion rate and progress charts available for daily, weekly, and monthly views |
+| BO-02 | Make daily task planning frictionless | Users can create and schedule a Task in under 5 seconds |
+| BO-03 | Help users see their task completion progress and plan vs. actual gaps | Task completion rates and progress charts available for daily, weekly, and monthly views |
 | BO-05 | Build a scalable SaaS foundation for future growth | Architecture supports many concurrent users |
 | BO-06 | Establish a stable, maintainable codebase | Full test coverage on core services; CI/CD pipeline live |
 | BO-07 | Ensure user data security and privacy | OAuth-only login; all data scoped to the authenticated user |
@@ -132,7 +135,7 @@ This product serves as both a personal utility and a proof-of-concept platform. 
 **Persona 1 — The Busy Parent**
 - Age: 30–45
 - Situation: Works part-time or full-time, has one or more young children, wants to carve out time for self-improvement
-- Goal: Spend at least 30 minutes per day on English learning and not let housekeeping take over the whole day
+- Goal: Complete at least one English learning task per day and keep housekeeping tasks under control
 - Frustration: Has no clear plan for the day and reacts to whatever demands arise
 
 **Persona 2 — The Self-Improver**
@@ -157,11 +160,11 @@ Business requirements describe **what** the system must do to satisfy the busine
 
 | ID | Requirement | Priority | Linked Objective |
 |---|---|---|---|
-| BR-01 | The system must allow users to register and sign in using a third-party OAuth provider (Google as minimum) without creating a separate username and password | Must Have | BO-07 |
-| BR-02 | The system must maintain a secure, persistent session so users do not need to re-authenticate on every visit | Must Have | BO-02 |
-| BR-03 | The system must allow users to sign out and must invalidate their session immediately | Must Have | BO-07 |
-| BR-04 | The system must allow users to permanently delete their account and all associated data | Must Have | BO-07 |
-| BR-05 | The system must support an admin role with elevated capabilities, distinct from regular users | Must Have | BO-05 |
+| BR-AUTH-01 | The system must allow users to register and sign in using a third-party OAuth provider (Google as minimum) without creating a separate username and password | Must Have | BO-07 |
+| BR-AUTH-02 | The system must maintain a secure, persistent session so users do not need to re-authenticate on every visit | Must Have | BO-02 |
+| BR-AUTH-03 | The system must allow users to sign out and must invalidate their session immediately | Must Have | BO-07 |
+| BR-AUTH-04 | The system must allow users to permanently delete their account and all associated data | Must Have | BO-07 |
+| BR-AUTH-05 | The system must support an admin role with elevated capabilities, distinct from regular users | Must Have | BO-05 |
 
 ### 5.2 Onboarding
 
@@ -169,131 +172,135 @@ New users must complete a first-run setup flow immediately after their first sig
 
 | ID | Requirement | Priority | Linked Objective |
 |---|---|---|---|
-| BR-06 | Upon first sign-in the system must present a mandatory onboarding flow that collects the user's initial configuration before granting access to the main application | Must Have | BO-01, BO-02 |
-| BR-07 | Onboarding must require the user to select which categories from the admin catalogue they wish to track; if the catalogue contains no visible categories, the system must show a fallback message and prevent onboarding from proceeding until an admin makes at least one category available | Must Have | BO-01 |
-| BR-08 | Onboarding must require the user to set a daily free-time budget in minutes | Must Have | BO-04 |
-| BR-09 | Onboarding must require the user to add at least one Backlog Item to each selected category; the system must guide the user through creating their initial backlog before accessing the main application | Must Have | BO-01, BO-02 |
-| BR-10 | Onboarding must prompt the user to configure browser push notification preferences (with the ability to opt out); if the user skips this step, notifications must default to off | Must Have | BO-01 |
-| BR-11 | New users must be assigned the zero AI message quota tier by default, giving no access to the AI assistant until an admin upgrades their tier | Must Have | BO-05 |
+| BR-ONB-01 | Upon first sign-in the system must present a mandatory onboarding flow that collects the user's initial configuration before granting access to the main application | Must Have | BO-01, BO-02 |
+| BR-ONB-02 | Onboarding must guide the user to set up their personal categories; the system must present five suggested default categories (Housekeeping, English Learning, Professional Learning, Gardening, Child-Rearing) that the user may keep, rename, delete, or replace with their own; at least one category must be created before proceeding | Must Have | BO-01 |
+| BR-ONB-03 | Onboarding must require the user to set a daily free-time budget in minutes | Must Have | BO-04 |
+| BR-ONB-04 | Onboarding must require the user to add at least one Backlog Item to each selected category; the system must guide the user through creating their initial backlog before accessing the main application | Must Have | BO-01, BO-02 |
+| BR-ONB-05 | Onboarding must prompt the user to configure browser push notification preferences (with the ability to opt out); if the user skips this step, notifications must default to off | Must Have | BO-01 |
+| BR-ONB-06 | New users must be assigned the zero AI message quota tier by default, giving no access to the AI assistant until an admin upgrades their tier | Must Have | BO-05 |
 
 ### 5.3 Time Planning
 
 | ID | Requirement | Priority | Linked Objective |
 |---|---|---|---|
-| BR-12 | The system must present a daily view showing the user's active categories and their progress against daily time goals | Must Have | BO-01, BO-03 |
-| BR-13 | The system must present a weekly view showing, for each day: planned entries for future days and logged entries for past days, alongside goals and completion rates across the user's active categories | Must Have | BO-03 |
-| BR-14 | The system must allow users to navigate to any past day or week to view their historical data; all history is retained indefinitely | Must Have | BO-03 |
-| BR-15 | The system must display progress visually (charts, progress bars, percentage completion) in real time as time is logged | Must Have | BO-03 |
-| BR-16 | The daily planner must display a visual remaining budget indicator showing how much of the user's daily free-time budget has been consumed across all active categories | Should Have | BO-03, BO-04 |
-| BR-17 | The system must detect and store the user's local timezone on every sign-in and apply it consistently for all date calculations, day boundaries, and AI scheduling suggestions | Must Have | BO-02, BO-04 |
-| BR-84 | The system must present a monthly view showing all scheduled Tasks and generic time blocks across the calendar month, allowing users to navigate forward and backward by month | Must Have | BO-03 |
+| BR-PLAN-01 | The system must present a daily view showing the user's active categories, their scheduled Tasks, and progress (Tasks completed vs. Tasks planned) for the current day | Must Have | BO-01, BO-03 |
+| BR-PLAN-02 | The system must present a weekly view showing, for each day: planned entries for future days and logged entries for past days, alongside Daily Commitments and completion rates across the user's active categories | Must Have | BO-03 |
+| BR-PLAN-03 | The system must allow users to navigate to any past day or week to view their historical data; all history is retained indefinitely | Must Have | BO-03 |
+| BR-PLAN-04 | The system must display progress visually (charts, progress bars, percentage completion) in real time as Tasks are marked done or ad-hoc time is logged | Must Have | BO-03 |
+| BR-PLAN-05 | The daily planner must display a visual remaining budget indicator showing how much of the user's daily free-time budget has been consumed across all active categories | Should Have | BO-03, BO-04 |
+| BR-PLAN-06 | The system must detect and store the user's local timezone on every sign-in and apply it consistently for all date calculations, day boundaries, and AI scheduling suggestions | Must Have | BO-02, BO-04 |
+| BR-PLAN-07 | The system must present a monthly view showing all scheduled Tasks and generic time blocks across the calendar month, allowing users to navigate forward and backward by month | Must Have | BO-03 |
 
 ### 5.4 Time Logging
 
 | ID | Requirement | Priority | Linked Objective |
 |---|---|---|---|
-| BR-18 | The system must allow users to log ad-hoc time against any category on today or any past date; logging against future dates is not permitted; ad-hoc logging is optional — the primary workflow is creating and completing planned entries | Should Have | BO-02 |
-| BR-19 | The system must provide quick-log shortcuts for common durations (15, 30, 60 minutes) | Must Have | BO-02 |
-| BR-20 | The system must allow users to enter a custom duration in minutes | Must Have | BO-02 |
-| BR-21 | The system must allow users to attach an optional text note to any time entry | Should Have | BO-01 |
-| BR-22 | The system must allow users to edit or delete any of their time entries | Must Have | BO-01 |
+| BR-LOG-01 | The system must allow users to log ad-hoc time against any category on today or any past date; logging against future dates is not permitted; ad-hoc logging is optional — the primary workflow is creating and completing planned entries | Should Have | BO-02 |
+| BR-LOG-02 | The system must provide quick-log shortcuts for common durations (15, 30, 60 minutes) | Should Have | BO-02 |
+| BR-LOG-03 | The system must allow users to enter a custom duration in minutes | Should Have | BO-02 |
+| BR-LOG-04 | The system must allow users to attach an optional text note to any time entry | Should Have | BO-01 |
+| BR-LOG-05 | The system must allow users to edit or delete any of their time entries | Must Have | BO-01 |
 
-### 5.4b Task Management
+### 5.5 Task Management
 
 Each category has a **Backlog** — a catalogue of user-defined activities (Backlog Items) that the user intends to do. Scheduling a Backlog Item for a specific date and duration creates a **Task**. Tasks are the primary planning unit. Completing a Task automatically logs the time. Backlog Items are persistent catalogue entries; they are not consumed or removed when Tasks are created from them.
 
 | ID | Requirement | Priority | Linked Objective |
 |---|---|---|---|
-| BR-67 | The system must allow users to create, edit, and delete Backlog Items within any of their active categories; Backlog Items are entirely user-managed with no admin involvement | Must Have | BO-01 |
-| BR-68 | Each Backlog Item must have a name; it may optionally have an estimated duration in minutes, a due date, and a recurrence schedule | Must Have | BO-01 |
-| BR-69 | The system must allow users to order Backlog Items within a category; the order is user-defined and reflected in the backlog panel and AI suggestions | Must Have | BO-01 |
-| BR-70 | The system must allow users to create a Task by scheduling a Backlog Item for a specific date and assigning it a duration; the Backlog Item remains in the backlog and the same Backlog Item may have multiple Tasks scheduled across different dates simultaneously; a Task may also be created as a generic time block without a linked Backlog Item | Must Have | BO-02 |
-| BR-71 | Marking a Task done must prompt the user to confirm or adjust the actual time spent (pre-filled with the planned duration); on confirmation, a logged time entry is automatically created for the Task's category using the actual duration; the original planned duration is preserved separately for plan vs. actual comparison | Must Have | BO-01, BO-02 |
-| BR-72 | Backlog Items configured with a recurrence schedule must automatically generate the next Task instance in the backlog when the current Task is marked done | Should Have | BO-01 |
-| BR-73 | The AI assistant must be aware of each category's full backlog — including Backlog Item names, estimated durations, due dates, recurrence, and order — when suggesting plans at any horizon | Must Have | BO-04 |
-| BR-74 | Each active category must display a backlog panel showing all Backlog Items ordered by user-defined sequence, accessible as a sidebar during planning | Must Have | BO-01 |
-| BR-75 | If a Task's scheduled date passes without being marked done, it must be displayed as overdue; the user may complete, reschedule, or delete the overdue Task | Must Have | BO-01 |
-| BR-76 | The backlog panel must be visible within the planning view so the user can pick Backlog Items when building or adjusting their plan | Must Have | BO-02 |
-| BR-77 | A Backlog Item is archived (removed from the active backlog) when the user explicitly marks it as permanently done from the backlog view | Must Have | BO-01 |
-| BR-78 | Planned entries (Tasks and generic time blocks) must be visually distinct from logged time entries in the daily planner, colour-coded by type | Must Have | BO-02 |
-| BR-79 | Tasks must not count toward completion rates or the remaining budget indicator until marked done; only logged (completed) entries contribute to those measures | Must Have | BO-03, BO-04 |
-| BR-80 | The user must be able to edit a Task's duration or linked Backlog Item before marking it done; the original planned duration is preserved separately | Must Have | BO-02 |
-| BR-81 | At end of day, the system must prompt the user to review any incomplete Tasks remaining for today and surface tomorrow's scheduled Tasks so the user can prepare or adjust; for each incomplete Task the user may complete, reschedule, or delete | Should Have | BO-03 |
-| BR-82 | Tasks may be created for any date from today up to 1 year ahead; this applies to both AI-applied and manually created Tasks | Must Have | BO-02 |
-| BR-83 | The system must allow users to manually create Tasks for any date directly from the planner UI, independently of the AI assistant; generic time blocks without a linked Backlog Item are also supported | Must Have | BO-02 |
+| BR-TASK-01 | The system must allow users to create, edit, and delete Backlog Items within any of their active categories; Backlog Items are entirely user-managed with no admin involvement | Must Have | BO-01 |
+| BR-TASK-02 | Each Backlog Item must have a name; it may optionally have a description (used by the AI as context for scheduling), an estimated duration in minutes, a due date, and a recurrence schedule | Must Have | BO-01 |
+| BR-TASK-03 | The system must allow users to order Backlog Items within a category; the order is user-defined and reflected in the backlog panel and AI suggestions | Must Have | BO-01 |
+| BR-TASK-04 | The system must allow users to create a Task by scheduling a Backlog Item for a specific date and assigning it a duration; the Backlog Item remains in the backlog and the same Backlog Item may have multiple Tasks scheduled across different dates simultaneously; a Task may also be created as a generic time block without a linked Backlog Item | Must Have | BO-02 |
+| BR-TASK-05 | Marking a Task done must prompt the user to confirm or adjust the actual time spent (pre-filled with the planned duration); on confirmation, a logged time entry is automatically created for the Task's category using the actual duration; the original planned duration is preserved separately for plan vs. actual comparison | Must Have | BO-01, BO-02 |
+| BR-TASK-06 | Backlog Items configured with a recurrence schedule must automatically add the next occurrence as a new Backlog Item ready to be scheduled when the current Task is marked done | Should Have | BO-01 |
+| BR-TASK-08 | Each active category must display a backlog panel showing all Backlog Items ordered by user-defined sequence, accessible as a sidebar during planning | Must Have | BO-01 |
+| BR-TASK-09 | If a Task's scheduled date passes without being marked done, it must be displayed as overdue; the user may complete, reschedule, or delete the overdue Task | Must Have | BO-01 |
+| BR-TASK-10 | The backlog panel must be visible within the planning view so the user can pick Backlog Items when building or adjusting their plan | Must Have | BO-02 |
+| BR-TASK-11 | A Backlog Item is archived (removed from the active backlog) when the user explicitly marks it as permanently done from the backlog view | Must Have | BO-01 |
+| BR-TASK-12 | Planned entries (Tasks and generic time blocks) must be visually distinct from logged time entries in the daily planner, colour-coded by type | Must Have | BO-02 |
+| BR-TASK-13 | Tasks must not count toward completion rates or the remaining budget indicator until marked done; only logged (completed) entries contribute to those measures | Must Have | BO-03, BO-04 |
+| BR-TASK-14 | The user must be able to edit a Task's duration or linked Backlog Item before marking it done; the original planned duration is preserved separately | Must Have | BO-02 |
+| BR-TASK-15 | At end of day, the system must prompt the user to review any incomplete Tasks remaining for today and surface tomorrow's scheduled Tasks so the user can prepare or adjust; for each incomplete Task the user may complete, reschedule, or delete | Should Have | BO-03 |
+| BR-TASK-16 | Tasks may be created for any date from today up to 1 year ahead; this applies to both AI-applied and manually created Tasks | Must Have | BO-02 |
+| BR-TASK-17 | The system must allow users to manually create Tasks for any date directly from the planner UI, independently of the AI assistant; generic time blocks without a linked Backlog Item are also supported | Must Have | BO-02 |
+| BR-TASK-18 | Users must be able to define prerequisite relationships between Backlog Items within the same category; a Backlog Item may depend on one or more other Backlog Items that must be completed before the dependent item can be scheduled as a Task | Must Have | BO-01 |
+| BR-TASK-19 | The system must prevent scheduling a Task for a Backlog Item if any of its Backlog Item prerequisites have not yet been marked done; the system must alert the user and indicate which prerequisites are outstanding | Must Have | BO-01 |
+| BR-TASK-20 | Users must be able to link scheduled Tasks within the same category to define dependency relationships; when a user manually moves a Task to a later date, all Tasks that depend on it (directly or transitively) automatically shift by the same time delta | Must Have | BO-01 |
+| BR-TASK-21 | When a Task with dependents is postponed, the user may additionally ask the AI assistant to suggest a revised schedule for the entire dependency chain; the AI must produce a plan that respects all dependency constraints | Should Have | BO-04 |
+| BR-TASK-22 | The system must detect and prevent circular dependencies at both the Backlog Item and Task levels; if an attempted dependency would create a cycle, the system must reject it and inform the user | Must Have | BO-01 |
 
-### 5.5 Goals & Priorities
+### 5.6 Priorities
 
 | ID | Requirement | Priority | Linked Objective |
 |---|---|---|---|
-| BR-23 | The system must derive each user's time commitment per category from their scheduled Tasks; the sum of planned Task durations for a given day or week is the effective goal for that period — there are no separately stored time goals | Must Have | BO-01, BO-03 |
-| BR-25 | The system must allow users to rank their active categories in order of personal priority | Must Have | BO-01 |
-| BR-26 | The priority order must be reflected throughout the app, particularly in the order categories are displayed and in AI suggestions | Must Have | BO-01, BO-04 |
+| BR-PRI-01 | The system must derive each user's time commitment per category from their scheduled Tasks; the sum of planned Task durations for a given day or week is the effective commitment for that period — there are no separately stored time goals | Must Have | BO-01, BO-03 |
+| BR-PRI-02 | The system must allow users to rank their active categories in order of personal priority | Must Have | BO-01 |
+| BR-PRI-03 | The priority order must be reflected throughout the app, particularly in the order categories are displayed and in AI suggestions | Must Have | BO-01, BO-04 |
 
-### 5.6 User Settings
+### 5.7 User Settings
 
 Personal settings that apply across the entire app and are editable at any time after onboarding.
 
 | ID | Requirement | Priority | Linked Objective |
 |---|---|---|---|
-| BR-27 | The system must allow users to select which categories from the admin-managed catalogue are active in their personal planner view; when a user deactivates a category, its existing time entries, Backlog Items, and Tasks are hidden from the planner but fully preserved and restored if the category is reactivated | Must Have | BO-01 |
-| BR-28 | The system must allow users to set a personal daily free-time budget (a single value in minutes) | Must Have | BO-04 |
+| BR-SET-01 | The system must allow users to create, rename, reorder, and delete their own categories at any time | Must Have | BO-01 |
+| BR-SET-02 | Each category must have a name; it may optionally have a colour, an emoji, and a description; the description is used by the AI assistant as context when suggesting plans and should reflect the user's goals, situation, and priorities within that life domain | Must Have | BO-01, BO-04 |
+| BR-SET-03 | When a user deletes a category, all associated time entries, Backlog Items, and Tasks must be preserved in an archived state and remain accessible in history | Must Have | BO-01, BO-07 |
+| BR-SET-04 | The system must allow users to set a personal daily free-time budget (a single value in minutes) | Must Have | BO-04 |
 
-### 5.7 Progress & Insights
-
-| ID | Requirement | Priority | Linked Objective |
-|---|---|---|---|
-| BR-29 | The system must show users how much time they have logged versus their goal for each category, for both daily and weekly periods | Must Have | BO-03 |
-| BR-30 | The system must track and display a consecutive-day streak for each category, based on days where at least one planned entry for that category was completed | Should Have | BO-03 |
-| BR-66 | The system must calculate and display a daily completion rate per category: the percentage of planned minutes that were actually logged on a given day | Should Have | BO-03 |
-| BR-31 | The system must allow users to compare the current week's total logged time to the previous week | Should Have | BO-03 |
-
-### 5.8 AI Assistant
+### 5.8 Progress & Insights
 
 | ID | Requirement | Priority | Linked Objective |
 |---|---|---|---|
-| BR-32 | The system must provide an AI-powered chat assistant accessible within the app; users on the zero quota tier must see a clear in-app message explaining that AI access is not yet enabled and that they should contact an admin | Must Have | BO-04 |
-| BR-33 | The AI assistant must be aware of the user's priorities, daily free-time budget, full backlog (Backlog Item names, durations, due dates, recurrence, order), scheduled Tasks, completion rates, and time logged across all relevant horizons; a per-day budget stated by the user in the chat must take precedence over the stored setting for that session | Must Have | BO-04 |
-| BR-34 | The AI assistant must be capable of suggesting a plan at any time horizon — remainder of the day, a full day, a week, a month, or longer; plans longer than one week are broken down into weekly segments; the AI must also review plan vs. actual completion and provide motivational messages | Must Have | BO-04 |
-| BR-35 | The AI provider must be configurable and swappable without a code change (e.g. between OpenAI, Anthropic Claude, and Azure OpenAI) | Must Have | BO-06 |
-| BR-36 | The system must enforce a daily AI message limit per user based on their assigned quota tier; three tiers exist: zero (no AI access), low, and high — the low and high limits are configurable by admins; tier changes take effect immediately — a demotion to zero locks the user out at once, and an upgrade grants the remaining allowance of the new tier (new tier limit minus messages already sent today) | Must Have | BO-05 |
-| BR-37 | The system must retain AI conversation history indefinitely for user reference; only the most recent messages (up to a configurable limit) are injected into each API request to manage context window size and cost | Must Have | BO-05, BO-07 |
-| BR-38 | AI API keys must never be exposed to the client — all AI calls must be proxied through the backend | Must Have | BO-07 |
-| BR-56 | When the AI presents a plan at any horizon, it must offer a one-click apply action that creates the corresponding Tasks (from Backlog Items) or generic time blocks across the relevant dates; multi-week plans are applied week by week | Must Have | BO-04 |
-| BR-58 | One-click apply is all-or-nothing — the user cannot partially apply a plan; if the suggestion is not suitable, the user must ask the AI to revise it before applying | Must Have | BO-04 |
-| BR-59 | The user must be able to undo an applied plan in a single action, removing all Tasks created by that application | Must Have | BO-04 |
+| BR-INS-01 | The system must show users how many Tasks they have completed versus Tasks planned for each category, alongside the corresponding Daily and Weekly Commitments, for both daily and weekly periods | Must Have | BO-03 |
+| BR-INS-02 | The system must track and display a consecutive-day streak for each category, based on days where at least one Task for that category was marked done | Should Have | BO-03 |
+| BR-INS-03 | The system must calculate and display a daily completion rate per category: the percentage of planned Tasks that were marked done on a given day (e.g. 3 Tasks planned, 2 done = 67%) | Should Have | BO-03 |
+| BR-INS-04 | The system must allow users to compare the current week's total logged time to the previous week | Should Have | BO-03 |
 
-### 5.9 Notifications
+### 5.9 AI Assistant
 
 | ID | Requirement | Priority | Linked Objective |
 |---|---|---|---|
-| BR-39 | The system must be capable of sending browser push notifications to users who have granted permission | Should Have | BO-01 |
-| BR-40 | Users must be able to configure the schedule (time and days) for each notification type independently | Should Have | BO-01 |
-| BR-41 | Users must be able to disable all notifications at any time | Must Have | BO-07 |
-| BR-42 | The system must send a weekly summary notification to opted-in users; the summary is delivered on Monday early morning in the user's local timezone | Could Have | BO-03 |
+| BR-AI-01 | The system must provide an AI-powered chat assistant accessible within the app; users on the zero quota tier must see a clear in-app message explaining that AI access is not yet enabled and that they should contact an admin | Must Have | BO-04 |
+| BR-AI-02 | The AI assistant must be aware of the user's priorities, daily free-time budget, category descriptions, full backlog (Backlog Item names, descriptions, durations, due dates, recurrence, order, and prerequisite relationships), scheduled Tasks (including Task-level dependencies), completion rates, and time logged across all relevant horizons; a per-day budget stated by the user in the chat must take precedence over the stored setting for that session | Must Have | BO-04 |
+| BR-AI-03 | The AI assistant must be capable of suggesting a plan at any time horizon — remainder of the day, a full day, a week, a month, or longer; plans longer than one week are broken down into weekly segments; the AI must respect all Backlog Item prerequisite and Task dependency constraints when scheduling — it must never suggest scheduling a Task before its prerequisites or predecessors are completed; the AI must also review plan vs. actual completion and provide motivational messages | Must Have | BO-04 |
+| BR-AI-04 | The AI provider must be configurable and swappable without a code change (e.g. between OpenAI, Anthropic Claude, and Azure OpenAI) | Must Have | BO-06 |
+| BR-AI-05 | The system must enforce a daily AI message limit per user based on their assigned quota tier; three tiers exist: zero (no AI access), low, and high — the low and high limits are configurable by admins; tier changes take effect immediately — a demotion to zero locks the user out at once, and an upgrade grants the remaining allowance of the new tier (new tier limit minus messages already sent today) | Must Have | BO-05 |
+| BR-AI-06 | The system must retain AI conversation history indefinitely for user reference; only the most recent messages (up to a configurable limit) are injected into each API request to manage context window size and cost | Must Have | BO-05, BO-07 |
+| BR-AI-07 | AI API keys must never be exposed to the client — all AI calls must be proxied through the backend | Must Have | BO-07 |
+| BR-AI-08 | When the AI presents a plan at any horizon, it must offer a one-click apply action that creates the corresponding Tasks (from Backlog Items) or generic time blocks across the relevant dates; multi-week plans are applied week by week | Must Have | BO-04 |
+| BR-AI-09 | One-click apply is all-or-nothing — the user cannot partially apply a plan; if the suggestion is not suitable, the user must ask the AI to revise it before applying | Must Have | BO-04 |
+| BR-AI-10 | The user must be able to undo an applied plan in a single action, removing all Tasks created by that application | Must Have | BO-04 |
 
-### 5.10 Administration
+### 5.10 Notifications
 
 | ID | Requirement | Priority | Linked Objective |
 |---|---|---|---|
-| BR-43 | The system must provide an admin dashboard showing key platform metrics: total users, active users, entries today, AI usage, and current quota tier limits | Must Have | BO-05 |
-| BR-44 | Admins must be able to search and view all user accounts | Must Have | BO-05 |
-| BR-45 | Admins must be able to deactivate and reactivate user accounts; a deactivated account cannot log in but all data is preserved and fully restored upon reactivation | Must Have | BO-05, BO-07 |
-| BR-46 | Admins must be able to assign a user to any of the three AI message quota tiers: zero, low, or high | Must Have | BO-05 |
-| BR-47 | Admins must be able to configure the daily message limits for the low and high tiers via the admin dashboard; changes apply immediately to all users on that tier | Must Have | BO-05 |
-| BR-48 | Admins must be able to view, add, hide, and edit global category definitions (labels, emojis, colours) | Should Have | BO-05 |
-| BR-49 | A hidden category must no longer appear in any user's selectable catalogue, but all existing time entries, Backlog Items, and Tasks associated with it must be preserved and remain linked to that category | Must Have | BO-01, BO-07 |
-| BR-50 | The system must capture and display analytics events for admin review (user registrations, time logged, AI usage, notification delivery) | Should Have | BO-05 |
+| BR-NOT-01 | The system must be capable of sending browser push notifications to users who have granted permission | Should Have | BO-01 |
+| BR-NOT-02 | Users must be able to configure the schedule (time and days) for each notification type independently | Should Have | BO-01 |
+| BR-NOT-03 | Users must be able to disable all notifications at any time | Must Have | BO-07 |
+| BR-NOT-04 | The system must send a weekly summary notification to opted-in users; the summary is delivered on Monday early morning in the user's local timezone | Could Have | BO-03 |
 
-### 5.11 Non-Functional Business Requirements
+### 5.11 Administration
+
+| ID | Requirement | Priority | Linked Objective |
+|---|---|---|---|
+| BR-ADM-01 | The system must provide an admin dashboard showing key platform metrics: total users, active users, entries today, AI usage, and current quota tier limits | Must Have | BO-05 |
+| BR-ADM-02 | Admins must be able to search and view all user accounts | Must Have | BO-05 |
+| BR-ADM-03 | Admins must be able to deactivate and reactivate user accounts; a deactivated account cannot log in but all data is preserved and fully restored upon reactivation | Must Have | BO-05, BO-07 |
+| BR-ADM-04 | Admins must be able to assign a user to any of the three AI message quota tiers: zero, low, or high | Must Have | BO-05 |
+| BR-ADM-05 | Admins must be able to configure the daily message limits for the low and high tiers via the admin dashboard; changes apply immediately to all users on that tier | Must Have | BO-05 |
+| BR-ADM-06 | The system must capture and display analytics events for admin review (user registrations, time logged, AI usage, notification delivery) | Should Have | BO-05 |
+
+### 5.12 Non-Functional Business Requirements
 
 | ID | Requirement | Priority |
 |---|---|---|
-| BR-51 | The application must be accessible from any modern desktop or mobile web browser without requiring installation | Must Have |
-| BR-52 | The application must be hosted on a public cloud provider to ensure availability and scalability | Must Have |
-| BR-53 | User data must be isolated — a user must never be able to access another user's data | Must Have |
-| BR-54 | The system must remain responsive and usable with many concurrent users | Must Have |
-| BR-55 | The application must present all system messages, notifications, and AI responses in an encouraging, warm tone | Should Have |
+| BR-NFR-01 | The application must be accessible from any modern desktop or mobile web browser without requiring installation | Must Have |
+| BR-NFR-02 | The application must be hosted on a public cloud provider to ensure availability and scalability | Must Have |
+| BR-NFR-03 | User data must be isolated — a user must never be able to access another user's data | Must Have |
+| BR-NFR-04 | The system must remain responsive and usable with many concurrent users | Must Have |
+| BR-NFR-05 | The application must present all system messages, notifications, and AI responses in an encouraging, warm tone | Should Have |
 
 ---
 
@@ -305,8 +312,8 @@ Personal settings that apply across the entire app and are editable at any time 
 |---|---|
 | A-01 | Users have a modern web browser (Chrome, Firefox, Safari, Edge — current or previous major version) |
 | A-02 | Users have a Google account for sign-in in V1 |
-| A-03 | Five life categories are seeded at launch; admins may add or hide categories; users select which active categories appear in their personal view; time entries always remain linked to their original category (see Section 12 for full detail) |
-| A-04 | Each user configures a personal daily free-time budget (single value in minutes) used as the primary AI scheduling input; per-day chat overrides take precedence; it is not a hard system limit (see Section 13 for full detail) |
+| A-03 | Five life categories are suggested as defaults during onboarding; users may keep, rename, delete, or replace them with their own; categories are entirely personal — there is no global admin catalogue; all data remains linked to its original category even if the category is later renamed or deleted |
+| A-04 | Each user configures a personal daily free-time budget (single value in minutes) used as the primary AI scheduling input; per-day chat overrides take precedence; it is not a hard system limit (see Section 12 for full detail) |
 | A-05 | The AI provider will be available with sufficient rate limits to support expected usage |
 | A-06 | Browser push notification support is available in the user's browser (graceful degradation where not supported) |
 | A-07 | The application will be used primarily in a single language (English) in V1 |
@@ -329,7 +336,7 @@ Personal settings that apply across the entire app and are editable at any time 
 | ID | Constraint | Type | Impact |
 |---|---|---|---|
 | C-01 | No native mobile app in V1 — web only | Scope | Users on mobile use the responsive web version |
-| C-02 | Users cannot create their own category definitions — category management is an admin function | Scope | Users select from the admin-managed catalogue; they cannot define new categories from scratch |
+| C-02 | Categories are personal to each user — there is no shared or admin-managed catalogue in V1 | Scope | Each user's category list is entirely their own; admins have no visibility into or control over individual user categories |
 | C-03 | No monetisation or payment processing in V1 | Scope | No subscription or billing features |
 | C-04 | No team or family sharing in V1 — single-user accounts only | Scope | Each account is entirely private |
 | C-05 | No offline-first / PWA support in V1 | Technical | App requires an internet connection |
@@ -347,7 +354,7 @@ Personal settings that apply across the entire app and are editable at any time 
 | R-01 | AI provider API costs exceed budget as user numbers grow | Low | High | Zero-tier default means no AI costs until admin explicitly enables access; per-user daily limits and configurable provider provide additional protection |
 | R-02 | Google deprecates or changes the OAuth API used for sign-in | Low | High | Abstract auth provider; add alternative OAuth providers (GitHub, Microsoft) |
 | R-03 | Browser push notification permissions are denied by most users, reducing notification value | High | Medium | All core functionality works without notifications; push is supplementary |
-| R-04 | Users find the seeded categories insufficient for their needs | Low | Medium | Admins can add categories in V1; users can hide irrelevant ones; full user-created categories deferred to V2; gather feedback post-launch |
+| R-04 | Users create categories that do not serve their planning needs well | Very Low | Low | Categories are fully user-created and editable at any time; users can rename, delete, and add categories without restriction |
 | R-05 | AI assistant responses are off-topic or inconsistent without sufficient user context | Medium | Medium | Careful system prompt engineering; context injected server-side per request |
 | R-06 | Data breach due to insufficient access controls | Low | Very High | All queries scoped to authenticated user ID; regular security audits; secrets in vault |
 | R-07 | Scope creep delays V1 delivery | Very High | High | Scope has grown significantly (task pools, Kanban model, monthly planner, AI multi-horizon planning); strict feature freeze needed; all further additions must go to V2 backlog |
@@ -362,7 +369,7 @@ The V1 release will be considered successful when the following criteria are met
 
 ### 9.1 Functional Completeness
 
-- All seeded categories are visible in the admin catalogue and fully functional in the daily, weekly, and monthly planner
+- Users can create personal categories with descriptions and populate them with Backlog Items during onboarding
 - Backlog Items can be created, ordered, and managed within each category
 - Tasks can be created, edited, marked done, and overdue Tasks are flagged correctly
 - Completing a Task creates a logged time entry with the correct duration
@@ -396,23 +403,21 @@ The V1 release will be considered successful when the following criteria are met
 ### 10.1 In Scope — V1
 
 - OAuth 2.0 sign-in (Google)
-- First-time onboarding flow (category selection, daily free-time budget, goals setup, notification opt-in)
-- Daily planner (Task timeline, backlog panel, remaining budget indicator)
-- Weekly planner (plan vs. actual, completion rates, overdue Tasks)
+- First-time onboarding flow (personal category setup with descriptions, daily free-time budget, initial Backlog Items, notification opt-in)
+- Backlog management per category (create, order, due dates, recurrence; Backlog Item panel visible during planning)
+- Daily planner (Task timeline colour-coded by state, backlog sidebar, remaining budget indicator)
+- Weekly planner (Tasks for future days; logged entries for past days; completion rates per category)
 - Monthly planner (calendar view of all scheduled Tasks)
-- Task management (create, mark done, overdue handling, recurrence)
-- Time entry management (ad-hoc logging; edit, delete, note)
+- Task management (create Tasks from Backlog Items; mark done; overdue handling; auto-log time on completion)
+- Task dependencies and Backlog Item prerequisites (same-category; cascading postponement; AI-assisted rescheduling; circular dependency prevention)
+- Ad-hoc time entry management (optional; edit, delete, note)
 - Priority management (drag-to-reorder categories)
-- Progress page with streaks and charts
-- AI assistant chat with full user context, conversation history, three-tier quota system, and per-type notification scheduling
-- AI one-click schedule apply (creates planned time entries; all-or-nothing; undoable)
-- Task pool per category (Kanban-style: Pool → Planned → Done states; pool visible during planning)
-- Task management (create, order, duration, due date, recurrence; overdue entry handling)
-- Planned task entry management (manual and AI apply; visually distinct; mark done auto-logs time)
-- Weekly and monthly planning (future-dated planned entries; higher-level goal templates)
-- Browser push notifications (reminders, goal achieved, weekly summary)
-- User settings (profile, goals, daily free-time budget, category selection, notifications, account deletion)
-- Admin dashboard (KPIs, user table, category management, AI quota tier management, zero-tier user alert)
+- Progress page (streaks, task completion rates, plan vs. actual)
+- AI assistant chat (full backlog + Task context, conversation history, three-tier quota system)
+- AI one-click plan apply (creates Tasks from Backlog Items at any horizon; all-or-nothing; undoable)
+- Browser push notifications (per-type schedule; reminders, weekly summary)
+- User settings (daily free-time budget, category management, notifications, account deletion)
+- Admin dashboard (KPIs, user table, AI quota tier management, zero-tier user alert)
 - User deactivation and reactivation
 - Timezone detection on every sign-in
 - AI conversation history (stored indefinitely; context-window injection capped at configurable limit)
@@ -425,7 +430,7 @@ The V1 release will be considered successful when the following criteria are met
 | Item | Reason deferred |
 |---|---|
 | Native iOS / Android app | Significant additional effort; responsive web covers mobile use |
-| User-created category definitions | Users can select and hide from the admin catalogue but cannot create entirely new categories; deferred to V2 |
+| Per-user category sharing or templates | Categories are personal; no shared catalogues or cross-user category templates in V1 |
 | Team / family shared accounts | Multi-tenancy at account level requires significant additional design |
 | Calendar sync (Google Calendar, Outlook) | OAuth scope complexity; not core to V1 value proposition |
 | Paid plans / subscription billing | No monetisation required in V1 |
@@ -441,17 +446,19 @@ The V1 release will be considered successful when the following criteria are met
 | Term | Definition |
 |---|---|
 | BRD | Business Requirements Document — this document |
-| Category | A life domain tracked by the application. Five are seeded at launch (Housekeeping, English Learning, Professional Learning, Gardening, Child-Rearing); admins may add or hide categories; users select which active categories appear in their personal view |
-| Backlog Item | A named activity created by the user in a category's backlog; a persistent catalogue entry; optionally has an estimated duration, a due date, and a recurrence schedule; user-ordered within the backlog; not consumed when Tasks are created from it |
+| Category | A personal life domain created and managed by the user. Five defaults are suggested at onboarding (Housekeeping, English Learning, Professional Learning, Gardening, Child-Rearing); users may keep, rename, delete, or add their own. Each category may have a description used by the AI for planning context. |
+| Backlog Item | A named activity created by the user in a category's backlog; a persistent catalogue entry; optionally has a description, an estimated duration, a due date, a recurrence schedule, and prerequisite Backlog Items; user-ordered within the backlog; not consumed when Tasks are created from it |
+| Prerequisite | A Backlog Item that must be completed before another Backlog Item in the same category can be scheduled as a Task; enforced at planning time |
+| Task Dependency | A relationship between two scheduled Tasks in the same category where one Task must be completed before the other; when the predecessor Task is postponed, all dependent Tasks shift by the same time delta |
 | Backlog | The per-category catalogue of all Backlog Items; visible as a panel during planning; the source from which Tasks are created |
 | Task | A Backlog Item scheduled for a specific date and assigned a duration; the primary planning unit; has a state of Planned or Done; the same Backlog Item may have multiple Tasks across different dates simultaneously |
 | Generic Time Block | A planned time block without a linked Backlog Item; used for unspecified category time; also has Planned or Done states |
 | Time Entry | A logged record of time actually spent on a category; created automatically when a Task or Generic Time Block is marked done (actual duration confirmed by user) or by ad-hoc logging; distinct from a Task |
-| Completion Rate | The percentage of planned Task duration for a category on a given day that was actually logged; e.g. planned 2 h of Tasks, logged 1 h = 50% |
+| Completion Rate | The percentage of planned Tasks for a category on a given day that were marked done; e.g. 3 Tasks planned, 2 done = 67% |
 | Streak | The number of consecutive calendar days on which at least one Task for a given category was marked done |
+| Priority Rank | The user-defined importance order of their active categories; rank 1 is highest priority; reflected in display order and AI planning suggestions |
 | Daily Commitment | The sum of durations of all Tasks scheduled for a category on a given day; derived automatically from the plan — not manually entered |
 | Weekly Commitment | The sum of durations of all Tasks scheduled for a category across a full week (Mon–Sun); derived from the plan |
-| Priority Rank | The user-defined importance order of their active categories; rank 1 is highest priority |
 | Daily Free-Time Budget | The user's personal total discretionary time available per day, stored as a single value in minutes; used as the primary input for AI scheduling suggestions |
 | AI Message Quota Tier | One of three platform-defined daily AI message allowances assigned to a user by an admin: zero (no AI access), low, and high; new users default to zero |
 | AI Assistant | The in-app chat interface powered by a configurable large language model (LLM) |
@@ -474,13 +481,26 @@ The V1 release will be considered successful when the following criteria are met
 
 All key decisions made during document review. Replaces the detailed review notes (Sections 12–23).
 
+### 12.0 Fundamental Model
+
+> **The user plans Tasks — not time. Time is an attribute of a Task, not the planning unit. Progress is measured by Tasks completed. Time is recorded automatically as a consequence of completing Tasks, not as a goal in itself.**
+
+| Principle | Statement |
+|---|---|
+| Primary planning unit | Task (a named activity scheduled for a specific date) |
+| Role of time | An attribute assigned to a Task (estimated duration); not independently tracked |
+| Definition of progress | Tasks marked done, not minutes logged |
+| Time logging | Automatic on Task completion; user confirms actual duration; ad-hoc logging is optional for unplanned activity |
+| Goal | Complete the Tasks you planned; the sum of Task durations is the commitment, not a separately entered target |
+
 ### 12.1 Categories
 
 | Decision | Detail |
 |---|---|
-| Five seeded categories at launch | Admins may add or hide categories; users select which active ones appear in their view |
-| Time entries always linked to original category | Hiding a category preserves all its data; entries remain accessible in history |
-| User-created categories | Deferred to V2; users select from admin-managed catalogue only |
+| Categories are fully user-created and personal | No admin catalogue; each user manages their own category list |
+| Five suggested defaults at onboarding | Housekeeping, English Learning, Professional Learning, Gardening, Child-Rearing — user may keep, rename, delete, or replace |
+| Category has optional description | Used by the AI as planning context (e.g. goals, situation, priorities in that domain) |
+| Data preserved on deletion | All time entries, Backlog Items, and Tasks remain linked to their original category in archive |
 
 ### 12.2 Daily Free-Time Budget
 
@@ -513,16 +533,16 @@ All key decisions made during document review. Replaces the detailed review note
 
 | Decision | Detail |
 |---|---|
-| Mandatory steps | Category selection, daily free-time budget, at least one Backlog Item per selected category, notification preferences |
+| Mandatory steps | Personal category creation (keep/rename/delete defaults or create own), daily free-time budget, at least one Backlog Item per category, notification preferences |
 | All steps Must Have | Including notification prompt (defaults to off if skipped) |
-| Empty catalogue | Fallback message shown; onboarding blocked until admin makes at least one category available |
+| Minimum requirement | At least one category must be created before proceeding; system guides user if they try to skip |
 | New users | Assigned zero AI tier by default |
 
-### 12.6 Planning Model (Planning-First)
+### 12.6 Planning Model (Task-First)
 
 | Decision | Detail |
 |---|---|
-| Primary workflow | Create Backlog Items → schedule as Tasks → mark done (auto-logs time) |
+| Primary workflow | Create Backlog Items → schedule as Tasks (assign date + duration) → mark Tasks done (time auto-logged) |
 | Ad-hoc logging | Optional (Should Have); for unplanned time not associated with a Task |
 | Future date restriction | Tasks may be created up to 1 year ahead; ad-hoc logs restricted to today and past |
 | Mark done | Prompts user to confirm or adjust actual time (pre-filled with planned duration); preserves original planned duration for plan vs. actual comparison |
@@ -534,7 +554,7 @@ All key decisions made during document review. Replaces the detailed review note
 | Decision | Detail |
 |---|---|
 | Two entities | Backlog Item (persistent catalogue entry per category) → Task (scheduled instance with date + duration) |
-| Backlog Items | Name, optional estimated duration, optional due date, optional recurrence; user-ordered; never consumed when Tasks are created |
+| Backlog Items | Name, optional description (AI context), optional estimated duration, optional due date, optional recurrence; user-ordered; never consumed when Tasks are created |
 | Tasks | Planned or Done state; same Backlog Item may have multiple Tasks across different dates simultaneously |
 | Completion | Marking a Task done auto-creates a logged time entry; user confirms/adjusts actual duration |
 | Recurrence | Auto-generates next Task in backlog when current is marked done |
@@ -546,8 +566,9 @@ All key decisions made during document review. Replaces the detailed review note
 
 | Decision | Detail |
 |---|---|
-| Time-based goals removed | Daily/Weekly Commitment is derived automatically from sum of scheduled Task durations |
-| Completion rate | Percentage of planned Task duration actually logged per category per day |
+| Time-based goals removed | There are no manually entered time targets; the goal for a period is simply to complete the Tasks planned for it |
+| Daily/Weekly Commitment | Derived automatically as the sum of scheduled Task durations; a consequence of planning, not a separate input |
+| Completion rate | Percentage of planned Tasks marked done per category per day (task-count based, not time-based) |
 | Streak | Consecutive days with at least one completed Task per category |
 | Plan vs. actual | Always available; planned duration preserved separately when actual differs |
 
@@ -558,7 +579,7 @@ All key decisions made during document review. Replaces the detailed review note
 | AI is second business objective | After planning tool itself (BO-01 primary, BO-04 second) |
 | Planning horizons | Day, week, month, longer; periods beyond one week decomposed into weekly segments |
 | One-click apply | Available at all horizons; creates Tasks from Backlog Items; all-or-nothing; undoable |
-| AI context | Full backlog (names, durations, due dates, recurrence, order), scheduled Tasks, completion rates, priorities, daily free-time budget |
+| AI context | Category descriptions, full backlog (Backlog Item names, descriptions, durations, due dates, recurrence, order), scheduled Tasks, completion rates, priorities, daily free-time budget |
 | Zero-tier | App fully usable without AI; AI is the primary value-add, not a requirement |
 
 ### 12.10 Planner Views
@@ -567,14 +588,13 @@ All key decisions made during document review. Replaces the detailed review note
 |---|---|
 | Daily planner | Single colour-coded timeline of Tasks and logged entries; backlog panel sidebar; remaining budget indicator |
 | Weekly planner | Future days show planned Tasks; past days show logged entries; completion rates per category |
-| Monthly planner | Calendar view of all scheduled Tasks and generic time blocks (BR-84) |
+| Monthly planner | Calendar view of all scheduled Tasks and generic time blocks (BR-PLAN-07) |
 | End-of-day review | Prompts for today's incomplete Tasks + surfaces tomorrow's plan |
 
 ### 12.11 Deferred to V2
 
 | Item |
 |---|
-| User-created category definitions |
 | Weekly and monthly plan templates (reusable named templates) |
 | Native iOS / Android app |
 | Team / family shared accounts |
@@ -584,6 +604,23 @@ All key decisions made during document review. Replaces the detailed review note
 | Email notifications |
 | Data export (CSV / PDF) |
 | Advanced AI features (voice, image input) |
+
+### 12.12 Task-First Model (Fifth Pass)
+
+| Decision | Detail |
+|---|---|
+| Completion Rate | Task-count based — % of planned Tasks marked done per day |
+| Ad-hoc log shortcuts priority | Demoted to Should Have (BR-LOG-01/02/03 all consistent) |
+### 12.13 Dependencies & Category Model (Sixth Pass)
+
+| Decision | Detail |
+|---|---|
+| Cascade trigger | User manually moving a Task to a later date only — not automatic on overdue |
+| How Task dependencies created | By linking Tasks in the planner UI |
+| User-created categories | Fully in scope for V1; no admin catalogue |
+| Category descriptions | Optional; used by AI as planning context |
+| Backlog Item descriptions | Optional; used by AI as scheduling context |
+
 
 ---
 
